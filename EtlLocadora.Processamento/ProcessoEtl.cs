@@ -6,11 +6,11 @@ namespace EtlLocadora.Processamento
 {
     public class ProcessoEtl : IProcessoEtl
     {
-        public readonly LocadoraContext Context;
+        public readonly LocadoraDwContext DwContext;
 
-        public ProcessoEtl(LocadoraContext context)
+        public ProcessoEtl(LocadoraDwContext dwContext)
         {
-            Context = context;
+            DwContext = dwContext;
         }
         public void Processar(int opt)
         {
@@ -40,7 +40,7 @@ namespace EtlLocadora.Processamento
                                "EXECUTE IMMEDIATE i.comando; " +
                                "END LOOP; " +
                                "END; ";
-            using var command = Context.Database.GetDbConnection().CreateCommand();
+            using var command = DwContext.Database.GetDbConnection().CreateCommand();
             if (command.Connection!.State != ConnectionState.Open)
             {
                 command.Connection.Open();

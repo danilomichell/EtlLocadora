@@ -40,8 +40,11 @@ namespace EtlLocadora.Processamento
         private static void SetDbContexts(IServiceCollection serviceCollection, IConfiguration configuration)
         {
 
-            var connectionProbdCartao = configuration.GetConnectionString("LocadoraContext");
-            serviceCollection.AddDbContextPool<LocadoraContext>(opts => opts.UseOracle(connectionProbdCartao));
+            var connectionLocadora = configuration.GetConnectionString("LocadoraContext");
+            serviceCollection.AddDbContextPool<LocadoraContext>(opts => opts.UseOracle(connectionLocadora));
+            
+            var connectionLocadoraDw = configuration.GetConnectionString("LocadoraDwContext");
+            serviceCollection.AddDbContextPool<LocadoraContext>(opts => opts.UseOracle(connectionLocadoraDw));
         }
 
         private static void SetScopedServices(IServiceCollection serviceCollection)
