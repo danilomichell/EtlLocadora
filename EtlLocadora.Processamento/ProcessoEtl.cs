@@ -34,17 +34,17 @@ namespace EtlLocadora.Processamento
         private void Exclude()
         {
 
-          //  Truncate(TableName(DwContext.FtLocacoes));
+            Truncate(TableName(Context.FtLocacoes));
 
-          //  Truncate(TableName(DwContext.DmArtista));
+            Truncate(TableName(Context.DmArtista));
 
-           // Truncate(TableName(DwContext.DmGravadora));
+            Truncate(TableName(Context.DmGravadora));
 
-            //Truncate(TableName(DwContext.DmSocio));
+            Truncate(TableName(Context.DmSocio));
 
-            //Truncate(TableName(DwContext.DmTempo));
+            Truncate(TableName(Context.DmTempo));
 
-            //Truncate(TableName(DwContext.DmTitulo));
+            Truncate(TableName(Context.DmTitulo));
         }
 
         private void Truncate(string tableName)
