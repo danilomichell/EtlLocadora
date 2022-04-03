@@ -44,7 +44,7 @@ namespace EtlLocadora.Processamento
             serviceCollection.AddDbContextPool<LocadoraContext>(opts => opts.UseOracle(connectionLocadora));
             
             var connectionLocadoraDw = configuration.GetConnectionString("LocadoraDwContext");
-            serviceCollection.AddDbContextPool<LocadoraContext>(opts => opts.UseOracle(connectionLocadoraDw));
+            serviceCollection.AddDbContextPool<LocadoraDwContext>(opts => opts.UseOracle(connectionLocadoraDw));
         }
 
         private static void SetScopedServices(IServiceCollection serviceCollection)

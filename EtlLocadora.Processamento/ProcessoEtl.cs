@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using EtlLocadora.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace EtlLocadora.Processamento
 {
@@ -32,14 +33,23 @@ namespace EtlLocadora.Processamento
 
         private void Exclude()
         {
-            const string cmd = "BEGIN FOR i IN(SELECT 1 ordem, 'delete from ' || table_name comando FROM dba_tables " +
-                               "WHERE owner = 'DW_LOCADORA' AND table_name LIKE 'FT%' " +
-                               "UNION ALL SELECT 2 ordem, 'delete from ' || table_name comando " +
-                               "FROM dba_tables WHERE owner = 'DW_LOCADORA' AND TABLE_name LIKE 'DM%' " +
-                               "ORDER BY 1 ) LOOP " +
-                               "EXECUTE IMMEDIATE i.comando; " +
-                               "END LOOP; " +
-                               "END; ";
+
+            Truncate(TableName(DwContext.FtLocacoes));
+
+            Truncate(TableName(DwContext.DmArtista));
+
+            Truncate(TableName(DwContext.DmGravadora));
+
+            Truncate(TableName(DwContext.DmSocio));
+
+            Truncate(TableName(DwContext.DmTempo));
+
+            Truncate(TableName(DwContext.DmTitulo));
+        }
+
+        private void Truncate(string tableName)
+        {
+            var cmd = $"delete from {tableName}";
             using var command = DwContext.Database.GetDbConnection().CreateCommand();
             if (command.Connection!.State != ConnectionState.Open)
             {
@@ -48,6 +58,21 @@ namespace EtlLocadora.Processamento
 
             command.CommandText = cmd;
             command.ExecuteNonQuery();
+        }
+
+        private static string GetName(IReadOnlyAnnotatable entityType, string defaultSchemaName = "dwlocadora")
+        {
+            var schema = entityType.FindAnnotation("Relational:Schema")!.Value;
+            var tableName = entityType.GetAnnotation("Relational:TableName").Value!.ToString();
+            var schemaName = schema == null ? defaultSchemaName : schema.ToString();
+            var name = $"{schemaName}.{tableName}";
+            return name;
+        }
+
+        private static string TableName<T>(DbSet<T> dbSet) where T : class
+        {
+            var entityType = dbSet.EntityType;
+            return GetName(entityType);
         }
     }
     public interface IProcessoEtl
