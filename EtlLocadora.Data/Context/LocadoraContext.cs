@@ -5,6 +5,10 @@ namespace EtlLocadora.Data.Context
 {
     public partial class LocadoraContext : DbContext
     {
+        public LocadoraContext()
+        {
+        }
+
         public LocadoraContext(DbContextOptions<LocadoraContext> options)
                : base(options)
         {
