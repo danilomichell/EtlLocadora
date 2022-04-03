@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EtlLocadora.Data.Domain.Entities.Relacional
+namespace EtlLocadora.Data.Domain.Entities.Dw
 {
     public partial class Copias
     {
