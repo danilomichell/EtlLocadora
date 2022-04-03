@@ -1,12 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using EtlLocadora.Data.Domain.Entities.Dw;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using EtlLocadora.Data.Domain.Entities;
 
 namespace EtlLocadora.Data.Context
 {
     public partial class LocadoraContext : DbContext
     {
         public LocadoraContext(DbContextOptions<LocadoraContext> options)
-                  : base(options)
+               : base(options)
         {
         }
 

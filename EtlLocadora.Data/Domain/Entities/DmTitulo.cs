@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EtlLocadora.Data.Domain.Entities.Dw
+namespace EtlLocadora.Data.Domain.Entities
 {
     public partial class DmTitulo
     {
