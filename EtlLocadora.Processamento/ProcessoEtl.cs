@@ -7,11 +7,11 @@ namespace EtlLocadora.Processamento
 {
     public class ProcessoEtl : IProcessoEtl
     {
-        public readonly LocadoraDwContext DwContext;
+        public readonly LocadoraContext Context;
 
-        public ProcessoEtl(LocadoraDwContext dwContext)
+        public ProcessoEtl(LocadoraContext context)
         {
-            DwContext = dwContext;
+            Context = context;
         }
         public void Processar(int opt)
         {
@@ -34,23 +34,23 @@ namespace EtlLocadora.Processamento
         private void Exclude()
         {
 
-            Truncate(TableName(DwContext.FtLocacoes));
+          //  Truncate(TableName(DwContext.FtLocacoes));
 
-            Truncate(TableName(DwContext.DmArtista));
+          //  Truncate(TableName(DwContext.DmArtista));
 
-            Truncate(TableName(DwContext.DmGravadora));
+           // Truncate(TableName(DwContext.DmGravadora));
 
-            Truncate(TableName(DwContext.DmSocio));
+            //Truncate(TableName(DwContext.DmSocio));
 
-            Truncate(TableName(DwContext.DmTempo));
+            //Truncate(TableName(DwContext.DmTempo));
 
-            Truncate(TableName(DwContext.DmTitulo));
+            //Truncate(TableName(DwContext.DmTitulo));
         }
 
         private void Truncate(string tableName)
         {
             var cmd = $"delete from {tableName}";
-            using var command = DwContext.Database.GetDbConnection().CreateCommand();
+            using var command = Context.Database.GetDbConnection().CreateCommand();
             if (command.Connection!.State != ConnectionState.Open)
             {
                 command.Connection.Open();

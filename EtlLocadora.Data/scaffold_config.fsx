@@ -4,16 +4,29 @@ open System
 open System.IO
 
 // aqui ficam as tabelas que vão gerar classes no projeto
-//let tabelas =
-   // [
- //       "locadora.artistas"
-  //  ]
+let tabelas =
+    [
+        "DW_LOCADORA.FT_LOCACOES"
+        "DW_LOCADORA.DM_ARTISTA"
+        "DW_LOCADORA.DM_GRAVADORA"
+        "DW_LOCADORA.DM_SOCIO"
+        "DW_LOCADORA.DM_TEMPO"
+        "DW_LOCADORA.DM_TITULO"
+        "LOCADORA.GRAVADORAS"
+        "LOCADORA.COPIAS"
+        "LOCADORA.ARTISTAS"
+        "LOCADORA.ITENS_LOCACOES"
+        "LOCADORA.LOCACOES"
+        "LOCADORA.SOCIOS"
+        "LOCADORA.TIPOS_SOCIOS"
+        "LOCADORA.TITULOS"
+    ]
 
 let caminho_appsettings = "EtlLocadora.Processamento/appsettings.json"
 let projeto_do_contexto = "EtlLocadora.Data"
 let nome_do_contexto = "LocadoraContext"
 let diretorio_do_contexto = "Context"
-let diretorio_das_entidades = "..\EtlLocadora.Data\Domain\Entities\Relacional"
+let diretorio_das_entidades = "..\EtlLocadora.Data\Domain\Entities\Dw"
 let projeto_das_entidades = "EtlLocadora.Data"
 let caminho_string_conexao = "$.ConnectionStrings.LocadoraContext" 
 let driver_banco_de_dados = "Oracle.EntityFrameworkCore"
@@ -26,8 +39,8 @@ let run str =
 
 let addRef ref = "dotnet add " + projeto_do_contexto + " reference " + ref
 
-let scaffold_str connection_string= //table_list =
-    //let table_str = table_list |> List.map(fun table -> " -t " + table) |> String.concat ""
+let scaffold_str connection_string table_list =
+    let table_str = table_list |> List.map(fun table -> " -t " + table) |> String.concat ""
     [ 
         "dotnet ef dbcontext scaffold \"" + connection_string + "\""
         "Oracle.EntityFrameworkCore"
@@ -39,7 +52,7 @@ let scaffold_str connection_string= //table_list =
         "--no-onconfiguring"
         "--no-pluralize"
         "--project " + projeto_do_contexto
-        //table_str
+        table_str
     ] |> String.concat " "
 
 let addPackage pkg = "dotnet add " + projeto_do_contexto + " package " + pkg
@@ -48,7 +61,7 @@ let addPackage pkg = "dotnet add " + projeto_do_contexto + " package " + pkg
 let scaffold() =
     let appSettings = JToken.Parse(File.ReadAllText(caminho_appsettings))
     let conexao = appSettings.SelectToken(caminho_string_conexao).Value<string>()
-    run <| scaffold_str conexao //tabelas
+    run <| scaffold_str conexao tabelas
     run <| addRef projeto_das_entidades
 
 let install() =
