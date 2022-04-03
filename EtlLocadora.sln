@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtlLocadora.Data", "EtlLocadora.Data\EtlLocadora.Data.csproj", "{E3A0FC85-16DF-4044-8767-D28C304998A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtlLocadora.Processamento", "EtlLocadora.Processamento\EtlLocadora.Processamento.csproj", "{38E335F9-8324-45F0-8B61-22193683AF71}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E3A0FC85-16DF-4044-8767-D28C304998A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3A0FC85-16DF-4044-8767-D28C304998A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3A0FC85-16DF-4044-8767-D28C304998A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3A0FC85-16DF-4044-8767-D28C304998A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38E335F9-8324-45F0-8B61-22193683AF71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38E335F9-8324-45F0-8B61-22193683AF71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38E335F9-8324-45F0-8B61-22193683AF71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38E335F9-8324-45F0-8B61-22193683AF71}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {94413868-D1A1-42AB-8308-6E9467FB2525}
+	EndGlobalSection
+EndGlobal
