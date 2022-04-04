@@ -11,15 +11,15 @@ namespace EtlLocadora.Data.Domain.Entities.Dw
         }
 
         public int IdTempo { get; set; }
-        public byte NuAno { get; set; }
-        public byte NuMes { get; set; }
+        public int NuAno { get; set; }
+        public int NuMes { get; set; }
         public int NuAnomes { get; set; }
         public string SgMes { get; set; } = null!;
         public string NmMesano { get; set; } = null!;
         public string NmMes { get; set; } = null!;
-        public byte NuDia { get; set; }
+        public int NuDia { get; set; }
         public DateTime DtTempo { get; set; }
-        public byte NuHora { get; set; }
+        public int NuHora { get; set; }
         public string Turno { get; set; } = null!;
 
         public virtual ICollection<FtLocacoes> FtLocacoes { get; set; }

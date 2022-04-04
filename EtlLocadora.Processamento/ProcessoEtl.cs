@@ -32,23 +32,29 @@ namespace EtlLocadora.Processamento
         private void ProcessarEtl()
         {
             var extracao = new Extract(_context);
+
+            var trasformacao = new Transform(extracao);
+
+            //var carga = new Load(trasformacao, _dwContext);
+
+            Console.WriteLine("Finalizado o ETL");
         }
 
 
         private void Exclude()
         {
 
-            //Truncate(TableName(_context.FtLocacoes));
+            Truncate(TableName(_dwContext.FtLocacoes));
 
-            //Truncate(TableName(_context.DmArtista));
+            Truncate(TableName(_dwContext.DmArtista));
 
-            //Truncate(TableName(_context.DmGravadora));
+            Truncate(TableName(_dwContext.DmGravadora));
 
-            //Truncate(TableName(_context.DmSocio));
+            Truncate(TableName(_dwContext.DmSocio));
 
-            //Truncate(TableName(_context.DmTempo));
+            Truncate(TableName(_dwContext.DmTempo));
 
-            //Truncate(TableName(_context.DmTitulo));
+            Truncate(TableName(_dwContext.DmTitulo));
         }
 
         private void Truncate(string tableName)

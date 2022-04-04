@@ -10,7 +10,7 @@ namespace EtlLocadora.Data.Domain.Entities.Dw
             FtLocacoes = new HashSet<FtLocacoes>();
         }
 
-        public byte IdGrav { get; set; }
+        public int IdGrav { get; set; }
         public string UfGrav { get; set; } = null!;
         public string NacBras { get; set; } = null!;
         public string NomGrav { get; set; } = null!;

@@ -5,10 +5,10 @@ namespace EtlLocadora.Data.Domain.Entities.Dw
 {
     public partial class FtLocacoes
     {
-        public byte IdSoc { get; set; }
+        public int IdSoc { get; set; }
         public int IdTitulo { get; set; }
-        public byte IdArt { get; set; }
-        public byte IdGrav { get; set; }
+        public int IdArt { get; set; }
+        public int IdGrav { get; set; }
         public int IdTempo { get; set; }
         public decimal ValorArrecadado { get; set; }
         public decimal TempoDevolucao { get; set; }
