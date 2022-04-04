@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EtlLocadora.Data.Domain.Entities
+namespace EtlLocadora.Data.Domain.Entities.Relacional
 {
     public partial class Gravadoras
     {
@@ -11,7 +11,7 @@ namespace EtlLocadora.Data.Domain.Entities
             Titulos = new HashSet<Titulos>();
         }
 
-        public byte CodGrav { get; set; }
+        public int CodGrav { get; set; }
         public string UfGrav { get; set; } = null!;
         public string NacBras { get; set; } = null!;
         public string NomGrav { get; set; } = null!;

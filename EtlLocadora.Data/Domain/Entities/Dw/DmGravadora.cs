@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EtlLocadora.Data.Domain.Entities
+namespace EtlLocadora.Data.Domain.Entities.Dw
 {
-    public partial class DmArtista
+    public partial class DmGravadora
     {
-        public DmArtista()
+        public DmGravadora()
         {
             FtLocacoes = new HashSet<FtLocacoes>();
         }
 
-        public byte IdArt { get; set; }
-        public string TpoArt { get; set; } = null!;
+        public byte IdGrav { get; set; }
+        public string UfGrav { get; set; } = null!;
         public string NacBras { get; set; } = null!;
-        public string NomArt { get; set; } = null!;
+        public string NomGrav { get; set; } = null!;
 
         public virtual ICollection<FtLocacoes> FtLocacoes { get; set; }
     }

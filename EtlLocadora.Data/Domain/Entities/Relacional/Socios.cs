@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EtlLocadora.Data.Domain.Entities
+namespace EtlLocadora.Data.Domain.Entities.Relacional
 {
     public partial class Socios
     {
@@ -10,9 +10,9 @@ namespace EtlLocadora.Data.Domain.Entities
             Locacoes = new HashSet<Locacoes>();
         }
 
-        public byte CodSoc { get; set; }
+        public int CodSoc { get; set; }
         public DateTime DatCad { get; set; }
-        public byte CodTps { get; set; }
+        public int CodTps { get; set; }
         public string StaSoc { get; set; } = null!;
         public string NomSoc { get; set; } = null!;
 

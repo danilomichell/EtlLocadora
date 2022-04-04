@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EtlLocadora.Data.Domain.Entities
+namespace EtlLocadora.Data.Domain.Entities.Relacional
 {
     public partial class Artistas
     {
@@ -10,11 +10,11 @@ namespace EtlLocadora.Data.Domain.Entities
             Titulos = new HashSet<Titulos>();
         }
 
-        public byte CodArt { get; set; }
+        public int CodArt { get; set; }
         public string TpoArt { get; set; } = null!;
         public string NacBras { get; set; } = null!;
-        public byte CodGrav { get; set; }
-        public byte QtdTit { get; set; }
+        public int CodGrav { get; set; }
+        public int QtdTit { get; set; }
         public decimal MedAnual { get; set; }
         public string NomArt { get; set; } = null!;
 

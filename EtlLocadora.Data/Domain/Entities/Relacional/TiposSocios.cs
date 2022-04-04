@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EtlLocadora.Data.Domain.Entities
+namespace EtlLocadora.Data.Domain.Entities.Relacional
 {
     public partial class TiposSocios
     {
@@ -10,8 +10,8 @@ namespace EtlLocadora.Data.Domain.Entities
             Socios = new HashSet<Socios>();
         }
 
-        public byte CodTps { get; set; }
-        public byte LimTit { get; set; }
+        public int CodTps { get; set; }
+        public int LimTit { get; set; }
         public decimal ValBase { get; set; }
         public string DscTps { get; set; } = null!;
 

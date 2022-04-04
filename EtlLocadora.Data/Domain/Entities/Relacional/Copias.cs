@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EtlLocadora.Data.Domain.Entities
+namespace EtlLocadora.Data.Domain.Entities.Relacional
 {
     public partial class Copias
     {
@@ -11,7 +11,7 @@ namespace EtlLocadora.Data.Domain.Entities
         }
 
         public int CodTit { get; set; }
-        public byte NumCop { get; set; }
+        public int NumCop { get; set; }
         public DateTime DatAq { get; set; }
         public string Status { get; set; } = null!;
 

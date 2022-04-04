@@ -24,11 +24,11 @@ let tabelas =
 
 let caminho_appsettings = "EtlLocadora.Processamento/appsettings.json"
 let projeto_do_contexto = "EtlLocadora.Data"
-let nome_do_contexto = "LocadoraContext"
+let nome_do_contexto = "LocadoraDwContext"
 let diretorio_do_contexto = "Context"
-let diretorio_das_entidades = "..\EtlLocadora.Data\Domain\Entities"
+let diretorio_das_entidades = "..\EtlLocadora.Data\Domain\Entities\Dw"
 let projeto_das_entidades = "EtlLocadora.Data"
-let caminho_string_conexao = "$.ConnectionStrings.LocadoraContext" 
+let caminho_string_conexao = "$.ConnectionStrings.LocadoraDwContext" 
 let driver_banco_de_dados = "Oracle.EntityFrameworkCore"
 
 // Comandos do terminal
@@ -52,7 +52,7 @@ let scaffold_str connection_string table_list =
         "--no-onconfiguring"
         "--no-pluralize"
         "--project " + projeto_do_contexto
-        table_str
+        //table_str
     ] |> String.concat " "
 
 let addPackage pkg = "dotnet add " + projeto_do_contexto + " package " + pkg

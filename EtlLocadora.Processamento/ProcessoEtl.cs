@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using EtlLocadora.Data.Context;
-using EtlLocadora.Data.Domain.Entities;
+using EtlLocadora.Processamento.Etl;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -9,10 +9,12 @@ namespace EtlLocadora.Processamento
     public class ProcessoEtl : IProcessoEtl
     {
         private readonly LocadoraContext _context;
+        private readonly LocadoraDwContext _dwContext;
 
-        public ProcessoEtl(LocadoraContext context)
+        public ProcessoEtl(LocadoraContext context, LocadoraDwContext dwContext)
         {
             _context = context;
+            _dwContext = dwContext;
         }
         public void Processar(int opt)
         {
@@ -29,29 +31,30 @@ namespace EtlLocadora.Processamento
 
         private void ProcessarEtl()
         {
+            var extracao = new Extract(_context);
         }
 
 
         private void Exclude()
         {
 
-            Truncate(TableName(_context.FtLocacoes));
+            //Truncate(TableName(_context.FtLocacoes));
 
-            Truncate(TableName(_context.DmArtista));
+            //Truncate(TableName(_context.DmArtista));
 
-            Truncate(TableName(_context.DmGravadora));
+            //Truncate(TableName(_context.DmGravadora));
 
-            Truncate(TableName(_context.DmSocio));
+            //Truncate(TableName(_context.DmSocio));
 
-            Truncate(TableName(_context.DmTempo));
+            //Truncate(TableName(_context.DmTempo));
 
-            Truncate(TableName(_context.DmTitulo));
+            //Truncate(TableName(_context.DmTitulo));
         }
 
         private void Truncate(string tableName)
         {
             var cmd = $"delete from {tableName}";
-            using var command = _context.Database.GetDbConnection().CreateCommand();
+            using var command = _dwContext.Database.GetDbConnection().CreateCommand();
             if (command.Connection!.State != ConnectionState.Open)
             {
                 command.Connection.Open();
