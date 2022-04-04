@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Data.Common;
 using System.Diagnostics;
 using EtlLocadora.Data.Context;
 using EtlLocadora.Data.Domain.Entities.Relacional;
@@ -22,7 +23,7 @@ namespace EtlLocadora.Processamento.Etl
             ExtrairTitulos(context);
             ExtrairArtistas(context);
             ExtrairGravadora(context);
-            //ExtrairLocacoes(context);
+            ExtrairLocacoes(context);
         }
 
         private void ExtrairTempo(LocadoraContext context)
@@ -92,6 +93,24 @@ namespace EtlLocadora.Processamento.Etl
             Console.WriteLine($"Finalizando extração das Gravadora" +
                              $" - Total extraido: {Gravadoras.Count}" +
                              $" - Tempo de extração: {sw.Elapsed.TotalSeconds} segundos.");
+        }
+
+        private void ExtrairLocacoes(LocadoraContext context)
+        {
+            Console.WriteLine("Iniciando extração das Locações");
+            var sw = new Stopwatch();
+            sw.Start();
+
+            Locacoes = context.Locacoes.Include(x => x.ItensLocacoes)
+                                       .ThenInclude(x => x.Copias)
+                                       .ThenInclude(x => x.CodTitNavigation)
+                                       .ThenInclude(x => x.CodArtNavigation)
+                                       .ToList();
+
+            sw.Stop();
+            Console.WriteLine($"Finalizando extração das Locações" +
+                                          $" - Total extraido: {Locacoes.Count}" +
+                                          $" - Tempo de extração: {sw.Elapsed.TotalSeconds} segundos.");
         }
     }
 }
