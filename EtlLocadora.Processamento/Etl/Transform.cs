@@ -1,12 +1,6 @@
 ﻿using EtlLocadora.Data.Domain.Entities.Dw;
 using EtlLocadora.Data.Domain.Entities.Relacional;
-using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EtlLocadora.Processamento.Etl
 {
@@ -26,7 +20,7 @@ namespace EtlLocadora.Processamento.Etl
             TransformarTitulos(extracao.Titulos);
             TransformarArtistas(extracao.Artistas);
             TransformarGravadoras(extracao.Gravadoras);
-            //TransformarFtLocacoes(extracao.Locacoes);
+            TransformarFtLocacoes(extracao.Locacoes);
         }
 
         private void TransformarTempo(List<DateTime> tempo)
@@ -38,14 +32,17 @@ namespace EtlLocadora.Processamento.Etl
             {
                 DmTempo.Add(new DmTempo
                 {
+                    IdTempo = item.Year * 100 + item.Month,
                     DtTempo = item,
-                    NmMes = item.Month.ToString(),
+                    NmMes = NomeMes(item.Month),
                     NuHora = item.Hour,
                     NmMesano = item.Month.ToString() + "/" + item.Year.ToString(),
                     NuAno = item.Year,
                     NuDia = item.Day,
                     NuAnomes = item.Year * 100 + item.Month,
-                    NuMes = item.Month
+                    NuMes = item.Month,
+                    SgMes = NomeMes(item.Month)[..3],
+                    Turno = item.Hour < 12 ? "Manha" : item.Hour < 18 ? "Tarde" : "Noite",
                 });
             }
             sw.Stop();
@@ -124,7 +121,8 @@ namespace EtlLocadora.Processamento.Etl
                 {
                     IdGrav = item.CodGrav,
                     NomGrav = item.NomGrav,
-                    UfGrav = item.UfGrav
+                    UfGrav = item.UfGrav,
+                    NacBras = item.NacBras
                 });
             }
             sw.Stop();
@@ -133,52 +131,69 @@ namespace EtlLocadora.Processamento.Etl
                               $" - Tempo de transformação: {sw.Elapsed.TotalSeconds} segundos.");
         }
 
-        //private void TransformarFtLocacoes(DataTable data)
-        //{
-        //    Console.WriteLine("Iniciando transformação das Locações");
-        //    var sw = new Stopwatch();
-        //    sw.Start();
-        //    var locacoes = new List<Locacoes>();
+        private void TransformarFtLocacoes(List<Locacoes> locacoes)
+        {
+            Console.WriteLine("Iniciando transformação das Locações");
+            var sw = new Stopwatch();
+            sw.Start();
 
-        //    foreach (DataRow item in data.Rows)
-        //    {
-        //        var obj = item.ItemArray;
-        //        DateTime? dtPamento = obj[6] is DBNull ? null : Convert.ToDateTime(obj[6]);
-        //        locacoes.Add(new Locacoa
-        //        {
-        //            IdSoc = Convert.ToInt32(obj[0]),
-        //            IdGravadora = Convert.ToInt32(obj[1]),
-        //            IdTitulo = Convert.ToInt32(obj[2]),
-        //            IdArtista = Convert.ToInt32(obj[3]),
-        //            DataLocacao = Convert.ToDateTime(obj[4]),
-        //            ValorLocacao = Convert.ToDecimal(obj[5]),
-        //            DataPagamento = dtPamento,
-        //            DataVencimento = Convert.ToDateTime(obj[7]),
-        //            StPagamento = obj[8] is "P" ? true : false
-        //        });
-        //    }
+            foreach (var locacao in locacoes)
+            {
+                foreach (var item in locacao.ItensLocacoes)
+                {
+                    var ftLocacao = new FtLocacoes
+                    {
+                        IdGrav = item.Copias.CodTitNavigation.CodGrav,
+                        IdArt = item.Copias.CodTitNavigation.CodArt,
+                        IdSoc = locacao.CodSoc,
+                        IdTitulo = item.Copias.CodTit,
+                        IdTempo = locacao.DatLoc.Year * 100 + locacao.DatLoc.Month,
+                        ValorArrecadado = locacao.ItensLocacoes.Sum(x => x.ValLoc),
+                        TempoDevolucao = locacao.StaPgto is "P" ? 0.0M : Math.Round((decimal)Math.Abs(DateTime.Now.Subtract(locacao.DatVenc).TotalDays)),
+                        MultaAtraso = locacao.StaPgto is "P" ? 0.0M : CalcularTempAtraso(locacao)
+                    };
+                    FtLocacoes.Add(ftLocacao);
+                }
+            }
 
-        //    FtLocacoes = locacoes.GroupBy(x => new {
-        //        x.IdArtista,
-        //        x.IdGravadora,
-        //        x.IdSocio,
-        //        x.IdTitulo,
-        //        x.DataLocacao
-        //    }
-        //                                )
-        //                         .Select(x => new FtLocacao(x.Key.IdGravadora,
-        //                                                   x.Key.IdArtista,
-        //                                                   x.Key.IdSocio,
-        //                                                   Convert.ToInt64(x.Key.DataLocacao.ToString("yyyyMMdd")),
-        //                                                   x.Key.IdTitulo,
-        //                                                   x.ToList()
-        //                                ))
-        //                         .ToList();
+            sw.Stop();
 
-        //    sw.Stop();
+            Console.WriteLine($"Finalizando transformação das Locações" +
+                              $" - Tempo de transformação: {sw.Elapsed.TotalSeconds} segundos.");
+        }
 
-        //    Console.WriteLine($"Finalizando transformação das Locações" +
-        //                      $" - Tempo de transformação: {sw.Elapsed.TotalSeconds} segundos.");
-        //}
+        private decimal CalcularTempAtraso(Locacoes locacao)
+        {
+            var tempoAtrasado = Math.Abs(DateTime.Now.Subtract(locacao.DatVenc).TotalDays);
+
+            decimal valorMulta = locacao.ValLoc;
+
+            if (tempoAtrasado > 1)
+            {
+                tempoAtrasado -= 1;
+
+                valorMulta += Convert.ToDecimal(tempoAtrasado * Convert.ToDouble(locacao.ValLoc * 0.40M));
+            }
+            return Math.Round(valorMulta, 2);
+        }
+
+        private string NomeMes(int mes)
+        {
+            return mes switch
+            {
+                1 => "Janeiro",
+                2 => "Fevereiro",
+                3 => "Março",
+                4 => "Abril",
+                5 => "Maio",
+                6 => "Junho",
+                7 => "Julho",
+                8 => "Agosto",
+                9 => "Setembro",
+                10 => "Outubro",
+                11 => "Novembro",
+                _ => "Dezembro",
+            };
+        }
     }
 }

@@ -35,7 +35,7 @@ namespace EtlLocadora.Processamento
 
             var trasformacao = new Transform(extracao);
 
-            //var carga = new Load(trasformacao, _dwContext);
+            _ = new Load(trasformacao, _dwContext);
 
             Console.WriteLine("Finalizado o ETL");
         }
@@ -68,6 +68,7 @@ namespace EtlLocadora.Processamento
 
             command.CommandText = cmd;
             command.ExecuteNonQuery();
+            command.Connection.Close();
         }
 
         private static string GetName(IReadOnlyAnnotatable entityType, string defaultSchemaName = "dwlocadora")
